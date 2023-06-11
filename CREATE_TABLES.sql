@@ -109,15 +109,48 @@ CREATE TABLE IF NOT EXISTS public.sunburst_data
     player character varying(255) COLLATE pg_catalog."default",
     goals integer,
     team_total integer,
-    league_total double precision
-   
+    league_total double precision,
+    goals_rank integer DEFAULT 0
+    
+)
+-- Table: public.stadiums_data
+
+-- DROP TABLE IF EXISTS public.stadiums_data;
+
+CREATE TABLE IF NOT EXISTS public.stadiums_data
+(
+    city character varying(255) COLLATE pg_catalog."default",
+    club character varying(255) COLLATE pg_catalog."default",
+    stadium character varying(255) COLLATE pg_catalog."default",
+    cap character varying(255) COLLATE pg_catalog."default",
+    country character varying(255) COLLATE pg_catalog."default",
+    longitude double precision,
+    latitude double precision,
+    trivia_page_link text COLLATE pg_catalog."default",
+    trivia text COLLATE pg_catalog."default",
+    league character varying(255) COLLATE pg_catalog."default"
+ 
 )
 
-CREATE TABLE IF NOT EXISTS public.wages_pts_data
+-- Table: public.league_pts
+
+-- DROP TABLE IF EXISTS public.league_pts;
+
+CREATE TABLE IF NOT EXISTS public.league_pts
 (
     league character varying(255) COLLATE pg_catalog."default",
+    avg_pts double precision,
     squad character varying(255) COLLATE pg_catalog."default",
+    pts_rank integer
+    
+)
+
+
+CREATE TABLE IF NOT EXISTS public.league_wages
+(
+    league character varying(255) COLLATE pg_catalog."default",
     avgofannual_wages double precision,
-    avgofpts double precision
-  
+    squad character varying(255) COLLATE pg_catalog."default",
+    wages_rank integer
+    
 )
