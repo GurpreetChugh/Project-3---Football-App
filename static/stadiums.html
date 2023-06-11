@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>European Football Stadiums</title>
+    <style>
+        /* Add custom styles here */
+    </style>
+</head>
+<body>
+    <h1>European Football Stadiums</h1>
+    
+    <h2>England</h2>
+    <ul>
+    {% for stadium in stadiums if stadium['country'] == 'England' %}
+        <li>
+            <h3>{{ stadium['name'] }}</h3>
+            <p>Location: {{ stadium['location'] }}</p>
+            <p>Capacity: {{ stadium['capacity'] }}</p>
+            <img src="{{ url_for('static', filename='images/' + stadium['image']) }}" alt="{{ stadium['name'] }}">
+        </li>
+    {% endfor %}
+    </ul>
+    
+    <h2>Spain</h2>
+    <ul>
+    {% for stadium in stadiums if stadium['country'] == 'Spain' %}
+        <li>
+            <h3>{{ stadium['name'] }}</h3>
+            <p>Location: {{ stadium['location'] }}</p>
+            <p>Capacity: {{ stadium['capacity'] }}</p>
+            <img src="{{ url_for('static', filename='images/' + stadium['image']) }}" alt="{{ stadium['name'] }}">
+        </li>
+    {% endfor %}
+    </ul>
+    
+    <h2>Germany</h2>
+    <ul>
+    {% for stadium in stadiums if stadium['country'] == 'Germany' %}
+        <li>
+            <h3>{{ stadium['name'] }}</h3>
+            <p>Location: {{ stadium['location'] }}</p>
+            <p>Capacity: {{ stadium['capacity'] }}</p>
+            <img src="{{ url_for('static', filename='images/' + stadium['image']) }}" alt="{{ stadium['name'] }}">
+        </li>
+    {% endfor %}
+    </ul>
+    
+    <h2>Italy</h2>
+    <ul>
+    {% for stadium in stadiums if stadium['country'] == 'Italy' %}
+        <li>
+            <h3>{{ stadium['name'] }}</h3>
+            <p>Location: {{ stadium['location'] }}</p>
+            <p>Capacity: {{ stadium['capacity'] }}</p>
+            <img src="{{ url_for('static', filename='images/' + stadium['image']) }}" alt="{{ stadium['name'] }}">
+        </li>
+    {% endfor %}
+    </ul>
+    
+    <h2>France</h2>
+    <ul>
+    {% for stadium in stadiums if stadium['country'] == 'France' %}
+        <li>
+            <h3>{{ stadium['name'] }}</h3>
+            <p>Location: {{ stadium['location'] }}</p>
+            <p>Capacity: {{ stadium['capacity'] }}</p>
+            <img src="{{ url_for('static', filename='images/' + stadium['image']) }}" alt="{{ stadium['name'] }}">
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
