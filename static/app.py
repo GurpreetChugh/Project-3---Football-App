@@ -2,24 +2,67 @@ from flask import Flask, render_template, jsonify
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
-
+from pprint import pprint
+import sqlalchemy
+from sqlalchemy import inspect
 # Database Setup
 #################################################
-url= "postgressql://skbuqieh:YXm0YsioQnkqxA92fuujM6M9ozp8sLi5@ruby.db.elephantsql.com/skbuqieh"
+url= "postgresql://skbuqieh:YXm0YsioQnkqxA92fuujM6M9ozp8sLi5@ruby.db.elephantsql.com/skbuqieh"
 engine = create_engine(url)
-# Base = automap_base()
-# Base.prepare(engine, reflect=True)
-# Base.metadata.tables # Check tables, not much useful
-# Base.classes.keys() # Get the table names
-#Measurement = Base.classes.measurement
-#Station = Base.classes.station
-# table_names = Base.metadata.tables.keys()
-# print(table_names)
 
-# app = Flask(__name__)
+Base = automap_base()
+Base.prepare(engine, reflect=True)
+Base.metadata.tables # Check tables, not much useful
+Base.classes.keys() # Get the table names
+table_names = Base.metadata.tables.keys()
+Stadiums = Base.classes.stadiums_data
+Sunburst = Base.classes.sunburst_data
+Wages = Base.classes.league_wages
+Points = Base.classes.league_pts
 
-# @app.route('/')
-# def home():
+app = Flask(__name__)
+@app.route('/')
+def home():
+  return('this is my homepage')
+  
+@app.route('/api/stadiums')
+def stadiums():
+ session = Session(engine)
+ response = session.query(Stadiums.city, Stadiums.club, Stadiums.stadium, Stadiums.cap,
+                      Stadiums.country, Stadiums.longitude, Stadiums.latitude, Stadiums.trivia, Stadiums.league).all()
+ session.close()
+
+ features = []
+ for row in response:
+    properties = {
+        'City': row.city,
+        'Stadium name': row.stadium,
+        'Squad name': row.club,
+        'Capacity': row.cap,
+        'Stadium fact': row.trivia
+    }
+    geometry = {
+        'type': 'Point',
+        'coordinates': [row.latitude, row.longitude]
+    }
+    feature = {
+        'type': 'Feature',
+        'geometry': geometry,
+        'properties': properties
+    }
+    features.append(feature)
+ geojson_data = {
+    'type': 'FeatureCollection',
+    'features': features
+ }
+
+ return geojson_data
+
+
+
+
+ #@app.route('/')
+ #def home():
 #     stadiums = [
 #         {
 #             'name': 'Wembley Stadium',
@@ -75,5 +118,5 @@ engine = create_engine(url)
 
 #     return render_template('index.html', stadiums=stadiums)
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
