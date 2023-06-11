@@ -77,7 +77,7 @@ function createMarkers(response) {
     
     
     // For each Stadium, create a marker, and bind a popup with the Stadiums's name.
-    let stadiumMarker = L.marker((stadCoords),{icon: soccerIcon}).bindPopup(`<h1> ${stadium.properties.Stadium}</h1><hr><h2>Capcity: ${stadium.properties.Cap}</h2><hr><h3>Fact: ${stadium.properties.Trivia}</h3>`)
+    let stadiumMarker = L.marker((stadCoords),{icon: soccerIcon}).bindPopup(`<h1> ${stadium.properties.Stadium}, ${stadium.properties.City}, ${stadium.properties.Country}</h1><hr><h2>Capcity: ${stadium.properties.Cap}</h2><hr><h3>Fact: ${stadium.properties.Trivia}</h3>`)
     
     // Add the marker to the stadiumMarkers array.
     // console.log(stadCoords)
