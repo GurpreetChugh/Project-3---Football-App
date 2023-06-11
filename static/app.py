@@ -5,15 +5,16 @@ from sqlalchemy import create_engine, func
 
 # Database Setup
 #################################################
-engine = create_engine("postgres://skbuqieh:YXm0YsioQnkqxA92fuujM6M9ozp8sLi5@ruby.db.elephantsql.com/skbuqieh")
-Base = automap_base()
-Base.prepare(engine, reflect=True)
+url= "postgressql://skbuqieh:YXm0YsioQnkqxA92fuujM6M9ozp8sLi5@ruby.db.elephantsql.com/skbuqieh"
+engine = create_engine(url)
+# Base = automap_base()
+# Base.prepare(engine, reflect=True)
 # Base.metadata.tables # Check tables, not much useful
 # Base.classes.keys() # Get the table names
 #Measurement = Base.classes.measurement
 #Station = Base.classes.station
-table_names = Base.metadata.tables.keys()
-print(table_names)
+# table_names = Base.metadata.tables.keys()
+# print(table_names)
 
 # app = Flask(__name__)
 
