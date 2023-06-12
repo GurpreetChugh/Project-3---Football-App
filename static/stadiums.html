@@ -1,72 +1,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>European Football Stadiums</title>
+    <title>Stadiums</title>
     <style>
-        /* Add custom styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #map {
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        .stadium {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .stadium img {
+            width: 150px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+        .stadium-info {
+            flex-grow: 1;
+        }
+        .stadium-info h3 {
+            margin: 0;
+        }
+        .stadium-info p {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
-    <h1>European Football Stadiums</h1>
-    
-    <h2>England</h2>
-    <ul>
-    {% for stadium in stadiums if stadium['country'] == 'England' %}
-        <li>
-            <h3>{{ stadium['name'] }}</h3>
-            <p>Location: {{ stadium['location'] }}</p>
-            <p>Capacity: {{ stadium['capacity'] }}</p>
-            <img src="{{ url_for('static', filename='images/' + stadium['image']) }}" alt="{{ stadium['name'] }}">
-        </li>
-    {% endfor %}
-    </ul>
-    
-    <h2>Spain</h2>
-    <ul>
-    {% for stadium in stadiums if stadium['country'] == 'Spain' %}
-        <li>
-            <h3>{{ stadium['name'] }}</h3>
-            <p>Location: {{ stadium['location'] }}</p>
-            <p>Capacity: {{ stadium['capacity'] }}</p>
-            <img src="{{ url_for('static', filename='images/' + stadium['image']) }}" alt="{{ stadium['name'] }}">
-        </li>
-    {% endfor %}
-    </ul>
-    
-    <h2>Germany</h2>
-    <ul>
-    {% for stadium in stadiums if stadium['country'] == 'Germany' %}
-        <li>
-            <h3>{{ stadium['name'] }}</h3>
-            <p>Location: {{ stadium['location'] }}</p>
-            <p>Capacity: {{ stadium['capacity'] }}</p>
-            <img src="{{ url_for('static', filename='images/' + stadium['image']) }}" alt="{{ stadium['name'] }}">
-        </li>
-    {% endfor %}
-    </ul>
-    
-    <h2>Italy</h2>
-    <ul>
-    {% for stadium in stadiums if stadium['country'] == 'Italy' %}
-        <li>
-            <h3>{{ stadium['name'] }}</h3>
-            <p>Location: {{ stadium['location'] }}</p>
-            <p>Capacity: {{ stadium['capacity'] }}</p>
-            <img src="{{ url_for('static', filename='images/' + stadium['image']) }}" alt="{{ stadium['name'] }}">
-        </li>
-    {% endfor %}
-    </ul>
-    
-    <h2>France</h2>
-    <ul>
-    {% for stadium in stadiums if stadium['country'] == 'France' %}
-        <li>
-            <h3>{{ stadium['name'] }}</h3>
-            <p>Location: {{ stadium['location'] }}</p>
-            <p>Capacity: {{ stadium['capacity'] }}</p>
-            <img src="{{ url_for('static', filename='images/' + stadium['image']) }}" alt="{{ stadium['name'] }}">
-        </li>
-    {% endfor %}
-    </ul>
+    <h1>Stadiums</h1>
+    <div id="map"></div>
+    <script>
+        // Retrieve stadium data from the API endpoint
+        fetch('/api/stadiums')
+            .then(response => response.json())
+            .then(data => {
+                // Create a map with Leaflet.js
+                const map = L.map('map').setView([0, 0], 2);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+                    maxZoom: 18
+                }).addTo(map);
+
+                // Add stadium markers to the map
+                data.features.forEach(feature => {
+                    const coordinates = feature.geometry.coordinates;
+                    const properties = feature.properties;
+
+                    const marker = L.marker(coordinates.reverse()).addTo(map);
+
+                    // Create stadium info popup
+                    const popupContent = `
+                        <div class="stadium">
+                            <img src="stadiums/${properties.image}" alt="${properties['Stadium name']}">
+                            <div class="stadium-info">
+                                <h3>${properties['Stadium name']}</h3>
+                                <p>Location: ${properties.City}, ${properties.country}</p>
+                                <p>Capacity: ${properties.Capacity}</p>
+                            </div>
+                        </div>
+                    `;
+
+                    marker.bindPopup(popupContent);
+                });
+            })
+            .catch(error => console.log(error));
+    </script>
 </body>
 </html>
+
+        
+           
+          
+          
+           
+      
+ 
+       
+ 
+    
+  
+   
+       
+            
+          
+            
+           
+                                                                                       
+                                                                                           
+                                                                                           
+       
+   
+  
+  
+   
+   
+
+      
+            
+          
+            
+         
+  
+     
