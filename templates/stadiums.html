@@ -1,82 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Stadiums</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        #map {
-            height: 400px;
-            margin-bottom: 20px;
-        }
-        .stadium {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .stadium img {
-            width: 150px;
-            height: 100px;
-            object-fit: cover;
-            margin-right: 20px;
-        }
-        .stadium-info {
-            flex-grow: 1;
-        }
-        .stadium-info h3 {
-            margin: 0;
-        }
-        .stadium-info p {
-            margin: 5px 0;
-        }
-    </style>
+  <title>Stadiums API</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    function getStadiums(league) {
+      axios.get(`/api/stadiums/${league}`)
+        .then(function (response) {
+          var stadiums = response.data.features;
+          var stadiumsContainer = document.getElementById('stadiums-container');
+          stadiumsContainer.innerHTML = '';
+
+          stadiums.forEach(function (stadium) {
+            var name = stadium.properties['Stadium name'];
+            var city = stadium.properties['City'];
+            var squad = stadium.properties['Squad name'];
+            var capacity = stadium.properties['Capacity'];
+            var fact = stadium.properties['Stadium fact'];
+
+            var stadiumCard = document.createElement('div');
+            stadiumCard.className = 'card';
+            stadiumCard.innerHTML = `
+              <h2>${name}</h2>
+              <p><strong>City:</strong> ${city}</p>
+              <p><strong>Squad:</strong> ${squad}</p>
+              <p><strong>Capacity:</strong> ${capacity}</p>
+              <p><strong>Fact:</strong> ${fact}</p>
+              <hr>
+            `;
+            stadiumsContainer.appendChild(stadiumCard);
+          });
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }
+
+    function getWagesAndPoints(league) {
+      axios.get(`/api/wages/points/${league}`)
+        .then(function (response) {
+          var leagueData = response.data;
+          var leagueName = leagueData.league;
+          var squadNames = leagueData.squad_name;
+          var avgWages = leagueData.avg_wage;
+          var avgPoints = leagueData.points;
+
+          var wagesAndPointsContainer = document.getElementById('wages-points-container');
+          wagesAndPointsContainer.innerHTML = '';
+
+          var leagueHeader = document.createElement('h2');
+          leagueHeader.innerText = leagueName;
+          wagesAndPointsContainer.appendChild(leagueHeader);
+
+          for (var i = 0; i < squadNames.length; i++) {
+            var squad = squadNames[i];
+            var wage = avgWages[i];
+            var points = avgPoints[i];
+
+            var squadCard = document.createElement('div');
+            squadCard.className = 'card';
+            squadCard.innerHTML = `
+              <p><strong>Squad:</strong> ${squad}</p>
+              <p><strong>Average Wage:</strong> ${wage}</p>
+              <p><strong>Average Points:</strong> ${points}</p>
+              <hr>
+            `;
+            wagesAndPointsContainer.appendChild(squadCard);
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }
+  </script>
 </head>
 <body>
-    <h1>Stadiums</h1>
-    <div id="map"></div>
-    <script>
-        // Retrieve stadium data from the API endpoint
-        fetch('/api/stadiums')
-            .then(response => response.json())
-            .then(data => {
-                // Create a map with Leaflet.js
-                const map = L.map('map').setView([0, 0], 2);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-                    maxZoom: 18
-                }).addTo(map);
+  <h1>Welcome to the Stadiums API</h1>
 
-                // Add stadium markers to the map
-                data.features.forEach(feature => {
-                    const coordinates = feature.geometry.coordinates;
-                    const properties = feature.properties;
+  <h2>Stadiums by League</h2>
+  <p>Select a league to get the stadiums:</p>
+  <select id="league-select" onchange="getStadiums(this.value)">
+    <option value="premier">Premier League</option>
+    <option value="laliga">La Liga</option>
+    <option value="seriea">Serie A</option>
+  </select>
+  <div id="stadiums-container"></div>
 
-                    const marker = L.marker(coordinates.reverse()).addTo(map);
+  <h2>Wages and Points by League</h2>
+ 
 
-                    // Create stadium info popup
-                    const popupContent = `
-                        <div class="stadium">
-                            <img src="stadiums/${properties.image}" alt="${properties['Stadium name']}">
-                            <div class="stadium-info">
-                                <h3>${properties['Stadium name']}</h3>
-                                <p>Location: ${properties.City}, ${properties.country}</p>
-                                <p>Capacity: ${properties.Capacity}</p>
-                            </div>
-                        </div>
-                    `;
-
-                    marker.bindPopup(popupContent);
-                });
-            })
-            .catch(error => console.log(error));
-    </script>
-</body>
-</html>
 
         
            
