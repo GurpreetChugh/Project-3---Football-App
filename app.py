@@ -21,61 +21,63 @@ Wages = Base.classes.league_wages
 Points = Base.classes.league_pts
 
 app = Flask(__name__)
+
 @app.route('/')
-def home():
-  return('this is my homepage')
+def index():
+  return render_template('index.html')
   
 @app.route('/api/stadiums/<league>')
 def stadiums(league):
- session = Session(engine)
- response = session.query(Stadiums.city, Stadiums.club, Stadiums.stadium, Stadiums.cap,
-                      Stadiums.country, Stadiums.longitude, Stadiums.latitude, Stadiums.trivia, Stadiums.league)\
-                        .filter(Stadiums.league == league).all()
+    session = Session(engine)
+    response = session.query(Stadiums.city, Stadiums.club, Stadiums.stadium, Stadiums.cap, Stadiums.country, Stadiums.longitude, Stadiums.latitude, Stadiums.trivia, Stadiums.league)\
+                      .filter(Stadiums.league == league).all()
                         
- session.close()
+    session.close()
 
- features = []
- for row in response:
-    properties = {
-        'City': row.city,
-        'Stadium name': row.stadium,
-        'Squad name': row.club,
-        'Capacity': row.cap,
-        'Stadium fact': row.trivia
+    features = []
+    for row in response:
+        properties = {
+            'City': row.city,
+            'Stadium name': row.stadium,
+            'Squad name': row.club,
+            'Capacity': row.cap,
+            'Stadium fact': row.trivia
+        }
+        geometry = {
+            'type': 'Point',
+            'coordinates': [row.latitude, row.longitude]
+        }
+        feature = {
+            'type': 'Feature',
+            'geometry': geometry,
+            'properties': properties
+        }
+        features.append(feature)
+        
+    geojson_data = {
+        'type': 'FeatureCollection',
+        'features': features
     }
-    geometry = {
-        'type': 'Point',
-        'coordinates': [row.latitude, row.longitude]
-    }
-    feature = {
-        'type': 'Feature',
-        'geometry': geometry,
-        'properties': properties
-    }
-    features.append(feature)
- geojson_data = {
-    'type': 'FeatureCollection',
-    'features': features
- }
 
- return geojson_data
+    return geojson_data
 
 
 
 @app.route('/api/wages/points/<league>')
 def wages_points(league):
- session = Session(engine)
- response_wages_pts = session.query(Wages.league,Wages.avgofannual_wages, Wages.squad, Points.avg_pts)\
+    session = Session(engine)
+    response_wages_pts = session.query(Wages.league,Wages.avgofannual_wages, Wages.squad, Points.avg_pts)\
                             .join(Points, Wages.squad == Points.squad)\
                             .filter(Wages.league == league)\
                             .order_by(Wages.league.asc(), Points.avg_pts.desc()).all()
- session.close()
+
+    session.close()
  
- league_wage_pts = {}
- squad_names = []
- avg_wages = []
- avg_points = []
- for row in response_wages_pts:
+    league_wage_pts = {}
+    squad_names = []
+    avg_wages = []
+    avg_points = []
+    for row in response_wages_pts:
     squad_name = row.squad
     wage = row.avgofannual_wages
     point = row.avg_pts
@@ -84,11 +86,72 @@ def wages_points(league):
     avg_points.append(point)
 
 
- league_wage_pts['league'] = 'league'
- league_wage_pts['squad_name'] = squad_names
- league_wage_pts['avg_wage'] = avg_wages
- league_wage_pts['points'] = avg_points
- return jsonify(league_wage_pts)
+    league_wage_pts['league'] = response_wages_pts[0][0]
+    league_wage_pts['squad_name'] = squad_names
+    league_wage_pts['avg_wage'] = avg_wages
+    league_wage_pts['points'] = avg_points
+    return jsonify(league_wage_pts)
+
+ @app.route('/api/goals/<league>')
+ def goals(league):
+    session = Session(engine)
+    response_sunburst = session.query(Sunburst.league, Sunburst.league_total_goals, Sunburst.squad, Sunburst.squad_total_goals, Sunburst.player, Sunburst.player_total_goal)\
+                                .filter(Sunburst.league == 'La Liga')\
+                                .order_by(Sunburst.squad_total_goals.desc(), Sunburst.player_total_goal.desc()).all()
+    
+    session.close()
+    
+    result = {'league_name': response_sunburst[0][0],
+              'league_goals': response_sunburst[0][1],
+              'teams': []}
+
+    team_dict = {}
+
+    for row in response_sunburst:
+        squad_name = row.squad
+        squad_goals = row.squad_total_goals
+        player_name = row.player
+        player_goals = row.player_total_goal
+        
+        if squad_name not in team_dict.values():
+        
+            team_dict = {'squad_name': squad_name, 
+                        'squad_goals': squad_goals,
+                        'players': []}
+
+            result['teams'].append(team_dict)
+        
+        player_dict = {'player_name': player_name,
+                    'player_goals': player_goals}
+        
+        team_dict['players'].append(player_dict)
+
+    labels = []
+    parents = []
+    values = []
+    labels.append(result['league_name'])
+    parents.append('')
+    values.append(result['league_goals'])
+
+    for team in result['teams'][:6]:
+        team_name = team['squad_name']
+        labels.append(team_name)
+        parents.append(result['league_name'])
+        team_goals = team['squad_goals']
+        values.append(team_goals)
+        for j in range(2):
+            player_name = team['players'][j]['player_name']
+            labels.append(player_name)
+            parents.append(team_name)
+            player_goals = team['players'][j]['player_goals']
+            values.append(player_goals)
+
+    team_player_goals = {'labels': labels,
+                     'parents': parents,
+                     'values': values}
+
+    return jsonify(team_player_goals)
+
  
  #def home():
 #     stadiums = [
