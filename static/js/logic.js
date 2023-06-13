@@ -13,7 +13,7 @@ let queryUrl = fetch('stadiums_final.geojson')
   console.error('Error:', error);
 });
 
-// let url = '/api'
+// let url = '/api/stadiums<league>'
 let Coords = [46.8182, 8.2275 ];
 let mapZoomLevel = 5;
 
