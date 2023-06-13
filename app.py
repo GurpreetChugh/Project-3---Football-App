@@ -25,11 +25,13 @@ app = Flask(__name__)
 def home():
   return('this is my homepage')
   
-@app.route('/api/stadiums')
-def stadiums():
+@app.route('/api/stadiums/<league>')
+def stadiums(league):
  session = Session(engine)
  response = session.query(Stadiums.city, Stadiums.club, Stadiums.stadium, Stadiums.cap,
-                      Stadiums.country, Stadiums.longitude, Stadiums.latitude, Stadiums.trivia, Stadiums.league).all()
+                      Stadiums.country, Stadiums.longitude, Stadiums.latitude, Stadiums.trivia, Stadiums.league)\
+                        .filter(Stadiums.league == league).all()
+                        
  session.close()
 
  features = []
@@ -60,8 +62,34 @@ def stadiums():
 
 
 
+@app.route('/api/wages/points/<league>')
+def wages_points(league):
+ session = Session(engine)
+ response_wages_pts = session.query(Wages.league,Wages.avgofannual_wages, Wages.squad, Points.avg_pts)\
+                            .join(Points, Wages.squad == Points.squad)\
+                            .filter(Wages.league == league)\
+                            .order_by(Wages.league.asc(), Points.avg_pts.desc()).all()
+ session.close()
+ 
+ league_wage_pts = {}
+ squad_names = []
+ avg_wages = []
+ avg_points = []
+ for row in response_wages_pts:
+    squad_name = row.squad
+    wage = row.avgofannual_wages
+    point = row.avg_pts
+    squad_names.append(squad_name)
+    avg_wages.append(wage)
+    avg_points.append(point)
 
- #@app.route('/')
+
+ league_wage_pts['league'] = 'league'
+ league_wage_pts['squad_name'] = squad_names
+ league_wage_pts['avg_wage'] = avg_wages
+ league_wage_pts['points'] = avg_points
+ return jsonify(league_wage_pts)
+ 
  #def home():
 #     stadiums = [
 #         {
