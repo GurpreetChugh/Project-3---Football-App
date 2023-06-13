@@ -1,7 +1,18 @@
+#custom-bg {
+    background-image: url('https://wallpaperset.com/w/full/8/7/6/182129.jpg');
+    -webkit-background-size: cover; 
+    -moz-background-size: cover;
+    -o-background-size: cover; 
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 body {
   padding: 0;
   margin: 0;
 }
+
 
 #map,
 body,
