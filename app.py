@@ -78,12 +78,12 @@ def wages_points(league):
     avg_wages = []
     avg_points = []
     for row in response_wages_pts:
-    squad_name = row.squad
-    wage = row.avgofannual_wages
-    point = row.avg_pts
-    squad_names.append(squad_name)
-    avg_wages.append(wage)
-    avg_points.append(point)
+        squad_name = row.squad
+        wage = row.avgofannual_wages
+        point = row.avg_pts
+        squad_names.append(squad_name)
+        avg_wages.append(wage)
+        avg_points.append(point)
 
 
     league_wage_pts['league'] = response_wages_pts[0][0]
@@ -92,8 +92,8 @@ def wages_points(league):
     league_wage_pts['points'] = avg_points
     return jsonify(league_wage_pts)
 
- @app.route('/api/goals/<league>')
- def goals(league):
+@app.route('/api/goals/<league>')
+def goals(league):
     session = Session(engine)
     response_sunburst = session.query(Sunburst.league, Sunburst.league_total_goals, Sunburst.squad, Sunburst.squad_total_goals, Sunburst.player, Sunburst.player_total_goal)\
                                 .filter(Sunburst.league == 'La Liga')\
