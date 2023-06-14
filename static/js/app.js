@@ -69,8 +69,10 @@ function createMap (europeanStadiums) {
 // Create the createMarkers function.
 function createMarkers(response) {
 
-  // Pull the "stadiums" property from response.data.
-  let stadiums = response.features
+  // Pull the "stadiums" property from response.data and filter for England
+  let stadiums = response.features.filter(function(feature) {
+    return feature.properties.Country === "England";
+  })
 
   // Initialize an array to hold the Stadium markers.
   let stadiumMarkers = []
