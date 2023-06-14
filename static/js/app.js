@@ -110,7 +110,7 @@ d3.json('stadiums_final.geojson').then(createMarkers);
 
 //  intial code to create bar+line chart using EPL data
 
-d3.json("http://127.0.0.1:5000/api/wages/points/EPL").then(data => {
+d3.json("/api/wages/points/EPL").then(data => {
     console.log(data)
     let leagueWagePoints = data
 
@@ -269,7 +269,7 @@ d3.json("http://127.0.0.1:5000/api/wages/points/EPL").then(data => {
 // }
 
 function updateBarLine(league) {
-    let base_url = "http://127.0.0.1:5000/api/wages/points/"
+    let base_url = "api/wages/points/"
 
     d3.json(`${base_url}${league}`).then(data => {
         let updatedWagePoints = data;
