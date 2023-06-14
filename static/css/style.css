@@ -1,5 +1,5 @@
 html,
-body  {background-image: url('/soccer2.jpeg');
+body  {background-image: url('../soccer2.jpeg');
 /* -webkit-background-size: cover; 
 -moz-background-size: cover; */
 background-size: cover; 
