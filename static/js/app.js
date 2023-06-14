@@ -9,22 +9,8 @@ d3.select('#selDataset')   // select 'select' element from html with id = 'selDa
     .text(value => value)
 
 // Initial code to create a leaflet map using EPL data
-// Store our API endpoint as queryUrl.
-let queryUrl = fetch('stadiums_final.geojson')
-.then(response => response.json())
-.then(data => {
-  // Process the GeoJSON data
-  console.log(data);
-  // Access specific properties or features
-  // console.log(features);
-  // console.log(feature[0].properties);
-  // ...
-})
-.catch(error => {
-  console.error('Error:', error);
-});
 
-// let url = '/api'
+let url = '/api/stadiums'
 let Coords = [52.3555, 1.1743];
 let mapZoomLevel = 5;
 
@@ -102,7 +88,7 @@ function createMarkers(response) {
 
 
 // Perform an API call to the Stadmium API to get the station information. Call createMarkers when it completes.
-d3.json('stadiums_final.geojson').then(createMarkers);
+d3.json(url).then(createMarkers);
 
 // intial code to create sunburst chart using EPL data
 
