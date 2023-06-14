@@ -65,7 +65,7 @@ function createMarkers(response) {
   // Loop through the Stadiums array.
   for (let i = 0; i < stadiums.length; i++) {
     let stadium = stadiums[i]
-    let stadCoords = [stadium.geometry.coordinates[1], stadium.geometry.coordinates[0]]
+    let stadCoords = [stadium.geometry.coordinates[0], stadium.geometry.coordinates[1]]
 
     var soccerIcon = L.icon({
       iconUrl: 'static/football_marker.png',
@@ -74,7 +74,7 @@ function createMarkers(response) {
     
     
     // For each Stadium, create a marker, and bind a popup with the Stadiums's name.
-    let stadiumMarker = L.marker((stadCoords),{icon: soccerIcon}).bindPopup(`<h1> ${stadium.properties.Stadium}</h1><hr><h2>Capcity: ${stadium.properties.Cap}</h2><hr><h3>Fact: ${stadium.properties.Trivia}</h3>`)
+    let stadiumMarker = L.marker((stadCoords),{icon: soccerIcon}).bindPopup(`<h1> ${stadium.properties.stadium}</h1><hr><h2>Capcity: ${stadium.properties.cap}</h2><hr><h3>Fact: ${stadium.properties.trivia}</h3>`)
     
     // Add the marker to the stadiumMarkers array.
     // console.log(stadCoords)
