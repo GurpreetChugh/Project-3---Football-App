@@ -1,0 +1,33 @@
+html,
+body  {background-image: url('soccer2.jpeg');
+/* -webkit-background-size: cover; 
+-moz-background-size: cover; */
+background-size: cover; 
+background-repeat: no-repeat;
+background-position: center;
+}
+#map {
+  height: 50%;
+  padding: 0;
+  margin: 0;
+}
+
+h3 { 
+  color : white;
+}
+h2 { 
+  color: white;
+}
+h1 {
+  color :white;
+}
+p {
+  color: white;
+}
+h5{
+  color: white;
+}
+
+select id { 
+  color: white;
+}
