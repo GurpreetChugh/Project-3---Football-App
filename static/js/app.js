@@ -10,7 +10,7 @@ d3.select('#selDataset')   // select 'select' element from html with id = 'selDa
 
 // Initial code to create a leaflet map using EPL data
 
-let url = '/api/stadiums'
+let url = '/api/stadiums/EPL'
 let Coords = [52.3555, 1.1743];
 let mapZoomLevel = 5;
 
@@ -56,9 +56,7 @@ function createMap (europeanStadiums) {
 function createMarkers(response) {
 
   // Pull the "stadiums" property from response.data and filter for England
-  let stadiums = response.features.filter(function(feature) {
-    return feature.properties.Country === "England";
-  })
+  let stadiums = response.features
 
   // Initialize an array to hold the Stadium markers.
   let stadiumMarkers = []
@@ -220,7 +218,6 @@ d3.json("/api/wages/points/EPL").then(data => {
 //         //  then vreate new markers based on league selected
       function onDropdownChange() {
         var selectedValue = d3.select('leaguenames').property('value');
-        var coordinates;
 
         // Update map coordinates based on dropdown value
         switch (selectedValue) {
