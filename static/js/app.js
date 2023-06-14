@@ -199,7 +199,7 @@ d3.json("/api/wages/points/EPL").then(data => {
       },
        showarrow: false
     };
-    layout.annotations.push(result1, result2);
+    layoutBarLine.annotations.push(result1, result2);
   }
   
   Plotly.newPlot('barline', data, layout);
