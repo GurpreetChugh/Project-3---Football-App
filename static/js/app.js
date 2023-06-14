@@ -224,16 +224,16 @@ d3.json("/api/wages/points/EPL").then(data => {
           case 'EPL':
             map.setview([52.3555, 1.1743], 5)
           case 'Bundesligua':
-            map.setview[50.1109, 8.6821];
+            map.setview([50.1109, 8.6821], 5);
             break;
           case 'LaLiga':
-            map.setview[40.4168, 3.7038];
+            map.setview([40.4168, 3.7038], 5);
             break;
             case 'Ligue1':
-              map.setview[46.2276, 2.2137]
+              map.setview([46.2276, 2.2137], 5);
             break;
           case 'SerieA':
-            map.setview[41.8719, 12.5674];
+            map.setview([41.8719, 12.5674], 5);
             break;
         }
       }
