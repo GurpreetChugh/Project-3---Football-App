@@ -99,19 +99,19 @@ CREATE TABLE IF NOT EXISTS public.team_data
     league character varying(255) COLLATE pg_catalog."default"
 
 )
-
 CREATE TABLE IF NOT EXISTS public.sunburst_data
 (
     league character varying(255) COLLATE pg_catalog."default",
-    seasons character varying(255) COLLATE pg_catalog."default",
-    league_rank integer,
+    league_total_goals double precision,
     squad character varying(255) COLLATE pg_catalog."default",
+    squad_total_goals double precision,
+    squad_rank bigint,
     player character varying(255) COLLATE pg_catalog."default",
-    goals integer,
-    team_total integer,
-    league_total double precision,
-    goals_rank integer DEFAULT 0
-    
+    player_total_goal double precision,
+    player_rank bigint
+   
+)
+
 )
 -- Table: public.stadiums_data
 
@@ -154,3 +154,7 @@ CREATE TABLE IF NOT EXISTS public.league_wages
     wages_rank integer
     
 )
+
+
+ALTER TABLE sunburst add column ID serial Primary Key;
+COPY persons TO 'C:\tmp\persons_db.csv' DELIMITER ',' CSV HEADER;
