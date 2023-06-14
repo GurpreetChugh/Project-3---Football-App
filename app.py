@@ -27,10 +27,10 @@ def index():
   return render_template('index.html')
   
 @app.route('/api/stadiums')
-def stadiums(league):
+def stadiums():
     session = Session(engine)
-    response = session.query(Stadiums.city, Stadiums.club, Stadiums.stadium, Stadiums.cap, Stadiums.country, Stadiums.longitude, Stadiums.latitude, Stadiums.trivia, Stadiums.league)\
-                      .all()
+    response = session.query(Stadiums.city, Stadiums.club, Stadiums.stadium, Stadiums.cap, Stadiums.country, Stadiums.longitude, Stadiums.latitude, Stadiums.trivia, Stadiums.league).all()
+                     
                         
     session.close()
 
