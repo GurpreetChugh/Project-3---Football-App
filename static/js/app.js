@@ -232,7 +232,30 @@ d3.json("http://127.0.0.1:5000/api/wages/points/EPL").then(data => {
 //         // update leaflet code
 //         //  first we need to code to remove existing marker
 //         //  then vreate new markers based on league selected
+      function onDropdownChange() {
+        var selectedValue = d3.select('leaguenames').property('value');
+        var coordinates;
 
+        // Update map coordinates based on dropdown value
+        switch (selectedValue) {
+          case 'EPL':
+            map.setview([52.3555, 1.1743], 5)
+          case 'Bundesligua':
+            map.setview[50.1109, 8.6821];
+            break;
+          case 'LaLiga':
+            map.setview[40.4168, 3.7038];
+            break;
+            case 'Ligue1':
+              map.setview[46.2276, 2.2137]
+            break;
+          case 'SerieA':
+            map.setview[41.8719, 12.5674];
+            break;
+        }
+      }
+      // Add event listener for dropdown change
+      d3.select('leagname').on('change', onDropdownChange);
 //     })
 // }
 
