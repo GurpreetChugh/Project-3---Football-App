@@ -10,7 +10,7 @@ d3.select('#selDataset')   // select 'select' element from html with id = 'selDa
 
 // Initial code to create a leaflet map using EPL data
 
-let url = '/api/stadiums/EPL'
+let url = '/api/stadiums'
 let Coords = [52.3555, 1.1743];
 let mapZoomLevel = 5;
 

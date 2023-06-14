@@ -26,11 +26,11 @@ app = Flask(__name__)
 def index():
   return render_template('index.html')
   
-@app.route('/api/stadiums/<league>')
+@app.route('/api/stadiums')
 def stadiums(league):
     session = Session(engine)
     response = session.query(Stadiums.city, Stadiums.club, Stadiums.stadium, Stadiums.cap, Stadiums.country, Stadiums.longitude, Stadiums.latitude, Stadiums.trivia, Stadiums.league)\
-                      .filter(Stadiums.league == league).all()
+                      .all()
                         
     session.close()
 
@@ -96,7 +96,7 @@ def wages_points(league):
 def goals(league):
     session = Session(engine)
     response_sunburst = session.query(Sunburst.league, Sunburst.league_total_goals, Sunburst.squad, Sunburst.squad_total_goals, Sunburst.player, Sunburst.player_total_goal)\
-                                .filter(Sunburst.league == 'La Liga')\
+                                .filter(Sunburst.league == league)\
                                 .order_by(Sunburst.squad_total_goals.desc(), Sunburst.player_total_goal.desc()).all()
     
     session.close()
