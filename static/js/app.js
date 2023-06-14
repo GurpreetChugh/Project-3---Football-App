@@ -17,6 +17,11 @@ d3.select('#selDataset')   // select 'select' element from html with id = 'selDa
 
 //  intial code to create bar+line chart using EPL data
 
+d3.json("http://127.0.0.1:5000/api/wages/points/EPL").then(data => {
+    console.log(data)
+}
+)
+
 // var xPoints = [  ]; // avg points for all the seasons for top 6 teams
   
 // var xWage = [ ]; // avg wage for all the seasons for top 6 teams
