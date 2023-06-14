@@ -68,7 +68,7 @@ function createMarkers(response) {
     let stadCoords = [stadium.geometry.coordinates[0], stadium.geometry.coordinates[1]]
 
     var soccerIcon = L.icon({
-      iconUrl: 'static/football_marker.png',
+      iconUrl: '/football_marker.png',
       iconSize: [50, 50], // Adjust the size of the icon as needed
     });
     
