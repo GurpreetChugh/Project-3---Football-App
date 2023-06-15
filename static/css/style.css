@@ -1,7 +1,7 @@
 html,
-body  {
-/* {background-image: url('../soccer2.jpeg'); */
-/* -webkit-background-size: cover; 
+body  
+{background-image: url('../soccer2.jpeg'); 
+-webkit-background-size: cover; 
 -moz-background-size: cover; */
 background-size: cover; 
 background-repeat: no-repeat;
@@ -9,12 +9,12 @@ background-position: center;
 }
 #map-id {
   height: 100%;
-  /* width: 100%; */
+  width: 100%;
   padding: 0;
   margin: 0;
 }
 
-/* h3 { 
+h3 { 
   color : white;
 }
 h2 { 
@@ -32,4 +32,4 @@ h5{
 
 select id { 
   color: white;
-} */
+}
