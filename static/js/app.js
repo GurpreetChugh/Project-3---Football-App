@@ -49,7 +49,7 @@ function createMap (europeanStadiums) {
  }
 
   // Create the map object with options.
-  let Coords = [53.3555, 1.1743];
+  let Coords = [52.3555, 4.1743];
   let mapZoomLevel = 6;
   let myMap = L.map("map-id", {
     center: Coords,
@@ -86,7 +86,8 @@ function createMarkers(response) {
     });
     
     // For each Stadium, create a marker, and bind a popup with the Stadiums's name.
-    let stadiumMarker = L.marker((stadCoords),{icon: soccerIcon}).bindPopup(`<h1>${stadium.properties.stadium}</h1><hr><h2>Capcity: ${stadium.properties.cap}</h2><hr><h3>Fact: ${stadium.properties.trivia} </h3>`)
+    let stadiumMarker = L.marker((stadCoords),{icon: soccerIcon}).bindPopup(`<h4>${stadium.properties.sadium}</h4>\
+    <hr><h4>Capcity: ${stadium.properties.cap}</h4><hr><h4>Fact: ${stadium.properties.trivia} </h4>`)
     
     // Add the marker to the stadiumMarkers array.
     // console.log(stadCoords)
