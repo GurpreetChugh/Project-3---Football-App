@@ -92,27 +92,39 @@ d3.json("/api/stadiums").then(data => {
   createMarkers(response)})
 
 // intial code to create sunburst chart using EPL data
-// d3.json('/api/goals/EPL').then(data => {
-//   console.log(data)
-// })
+d3.json('/api/goals/EPL').then(data => {
+  console.log(data)
+  let goals = data
+  
+  let dataSunburst = [{
+    type: "sunburst",
+    labels: [goals.labels],
+    parents: [goals.parents],
+    values: [goals.values],  
+    outsidetextfont: {size: 20, color: "#377eb8"},
+    // leaf: {opacity: 0.4},
+    marker: {line: {width: 2}},
+    }];
+    
+  let layoutSunburst = {
+    width: 500,
+    height: 500 } 
 
-// var sunburstdata = [{
-// type: "sunburst",
-// values: [data.values],
-// labels: [data.labels],
-// parents: [data.parents],
-// outsidetextfont: {size: 20, color: "#377eb8"},
-// // leaf: {opacity: 0.4},
-// marker: {line: {width: 2}},
-// }];
 
-// //var sunlayout = {
-// //  margin: {l: 0, r: 0, b: 0, t:0},
-// //  sunburstcolorway:["#636efa","#ef553b","#00cc96"],
-// //};
+  Plotly.newPlot('sunburst', dataSunburst, layoutSunburst)//, sunlayout);
+    
+})
 
 
-// Plotly.newPlot('sunburst', sunburstdata)//, sunlayout);
+
+
+//var sunlayout = {
+//  margin: {l: 0, r: 0, b: 0, t:0},
+//  sunburstcolorway:["#636efa","#ef553b","#00cc96"],
+//};
+
+
+
 
 
 //  intial code to create bar+line chart using EPL data
