@@ -268,12 +268,12 @@ d3.json("/api/wages/points/EPL").then(data => {
 //     })
 // }
 
-function updateBarLine() {
-    let dropdown = d3.select('#selDataset');
-    let league = dropdown.property("value");
-    console.log(league);
+function updateBarLine(league) {
+    // let dropdown = d3.select('#selDataset');
+    // let league = dropdown.property("value");
+    // console.log(league);
 
-    let base_url = "api/wages/points/"
+    // let base_url = "api/wages/points/"
     // let league = this.value
     url = "/api/wages/points/" + league
 
@@ -337,6 +337,7 @@ function updateBarLine() {
 
 d3.selectAll('#selDataset').on('change' , function (){
   console.log(this.value)
+  updateBarLine(this.value)
 })
 
 
