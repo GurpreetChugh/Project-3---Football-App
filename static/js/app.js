@@ -9,21 +9,6 @@
 //     .attr('value', value => value)
 //     .text(value => value)
 
-// Initial code to create a leaflet map using EPL data
-//   let Coords = [52.3555, 1.1743];
-//   let mapZoomLevel = 5;
-//   let myMap = L.map("map", {
-//     center: Coords,
-//     zoom: mapZoomLevel,
-//     // layers: [street, europeanStadiums]
-//   })
-//   let street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-//   }).addto(myMap)
-// let url = '/api/stadiums'
-// let Coords = [52.3555, 1.1743];
-// let mapZoomLevel = 5;
-
 
 function createMap (europeanStadiums) {
 
@@ -84,9 +69,10 @@ function createMarkers(response) {
       iconUrl: '../static/football_marker.png',
       iconSize: [50, 50], // Adjust the size of the icon as needed
     });
-    
+
+
     // For each Stadium, create a marker, and bind a popup with the Stadiums's name.
-    let stadiumMarker = L.marker((stadCoords),{icon: soccerIcon}).bindPopup(`<h4>${stadium.properties.sadium}</h4>\
+    let stadiumMarker = L.marker((stadCoords),{icon: soccerIcon}).bindPopup(`<h4> ${stadium.properties.stadium} </h4>\
     <hr><h4>Capcity: ${stadium.properties.cap}</h4><hr><h4>Fact: ${stadium.properties.trivia} </h4>`)
     
     // Add the marker to the stadiumMarkers array.
@@ -106,7 +92,27 @@ d3.json("/api/stadiums").then(data => {
   createMarkers(response)})
 
 // intial code to create sunburst chart using EPL data
+// d3.json('/api/goals/EPL').then(data => {
+//   console.log(data)
+// })
 
+// var sunburstdata = [{
+// type: "sunburst",
+// values: [data.values],
+// labels: [data.labels],
+// parents: [data.parents],
+// outsidetextfont: {size: 20, color: "#377eb8"},
+// // leaf: {opacity: 0.4},
+// marker: {line: {width: 2}},
+// }];
+
+// //var sunlayout = {
+// //  margin: {l: 0, r: 0, b: 0, t:0},
+// //  sunburstcolorway:["#636efa","#ef553b","#00cc96"],
+// //};
+
+
+// Plotly.newPlot('sunburst', sunburstdata)//, sunlayout);
 
 
 //  intial code to create bar+line chart using EPL data
@@ -227,43 +233,44 @@ d3.json("/api/wages/points/EPL").then(data => {
 //  then we  write the code to handle event change when we select the league from drop down
 
 
-// function updateLeaflet(league) {
-//     d3.json(league API).then(data => {
-//         let response = data;
-//         // update leaflet code
-//         //  first we need to code to remove existing marker
-//         //  then vreate new markers based on league selected
-//       function onDropdownChange() {
-//         var selectedValue = d3.select('leaguenames').property('value');
+function updateLeaflet(league) {
+  url1 = "/api/stadiums" + league
 
-//         // Update map coordinates based on dropdown value
-//         switch (selectedValue) {
-//           case 'EPL':
-//             map.setview([52.3555, 1.1743], 5)
-//           case 'Bundesligua':
-//             map.setview([50.1109, 8.6821], 5);
-//             break;
-//           case 'LaLiga':
-//             map.setview([40.4168, 3.7038], 5);
-//             break;
-//             case 'Ligue1':
-//               map.setview([46.2276, 2.2137], 5);
-//             break;
-//           case 'SerieA':
-//             map.setview([41.8719, 12.5674], 5);
-//             break;
-//         }
-//       }
-//       // Add event listener for dropdown change
-//       d3.select('leaguenames').on('change', onDropdownChange);
-// //     })
-// // }
+      d3.json(url1).then(data1 => {
+      console.log(data1)
+      })
+        // update leaflet code
+        //  first we need to code to remove existing marker
+        //  then vreate new markers based on league selected
+      // function onDropdownChange() {
+        var selectedValue = d3.select('#selDataset').property('value');
 
-
-// function updateSunburst(league) {
-//     d3.json(league API).then(data => {
-//         let response = data;
-
+        // Update map coordinates based on dropdown value
+        switch (selectedValue) {
+          case 'EPL':
+            map.setview([52.3555, 1.1743], 5)
+          case 'Bundesligua':
+            map.setview([50.1109, 8.6821], 5);
+            break;
+          case 'LaLiga':
+            map.setview([40.4168, 3.7038], 5);
+            break;
+            case 'Ligue1':
+              map.setview([46.2276, 2.2137], 5);
+            break;
+          case 'SerieA':
+            map.setview([41.8719, 12.5674], 5);
+            break;
+        }
+      }
+    
+      // Add event listener for dropdown change
+     
+     d3.selectAll('#selDataset').on('change' , function (){
+      console.log(this.value)
+      selectedValue(this.value)
+     })
+    
 //         // update sunburst code
 //     })
 // }
@@ -282,7 +289,7 @@ function updateBarLine(league) {
         let updatedWagePoints = data;
         let xPoints = updatedWagePoints.points.slice(0,6);  
         let xWage = updatedWagePoints.avg_wage.slice(0,6);
-        let yLabels = leagueWagePoints.squad_name.slice(0,6);
+        let yLabels = updatedWagePoints.squad_name.slice(0,6);
 
         let colorMarker;
         let colorMarkerLine;
@@ -351,6 +358,3 @@ d3.selectAll('#selDataset').on('change' , function (){
 // //     updateSunburst(league_selected)
 
 //     updateBarLine(league_selected)
-
-// })
-

@@ -9,7 +9,7 @@
   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
-  
+
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -26,7 +26,7 @@
   <!-- Our own CSS stylesheet -->
    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
    <script type="text/javascript" src="../static/js/app.js"></script>
-  
+
 </head>
 
 <body>
@@ -42,14 +42,14 @@
                <!-- <div class="well">  -->
         <!-- <div class = "text-left"> -->
         <h5>League</h5>
-        <select id="selDataset">
+        <select id="selDataset" onchange="optionChanged(this.value)"></select>
           <option value="EPL">EPL</option>
           <option value="LaLiga">LaLiga</option>
           <option value="SerieA">SerieA</option>
           <option value="Bundesliga">Bundesliga</option>
           <option value="Ligue1">Ligue1</option>
         </select>
-      
+
               <!-- </div> -->
             <!-- </div>  -->
         <!-- </div> -->
@@ -62,7 +62,7 @@
         <div id="barline"></div>
     </div>
         <!-- <div id="barline"></div> -->
-    
+
     </div>
   </div>
 
