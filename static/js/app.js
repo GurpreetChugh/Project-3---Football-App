@@ -49,7 +49,7 @@ function createMap (europeanStadiums) {
  }
 
   // Create the map object with options.
-  let Coords = [52.3555, 4.1743];
+  let Coords = [55.3555, 4.1743];
   let mapZoomLevel = 6;
   let myMap = L.map("map-id", {
     center: Coords,
