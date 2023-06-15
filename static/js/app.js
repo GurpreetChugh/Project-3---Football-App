@@ -1,3 +1,4 @@
+
 // code to dynamically create dropdown options
 var leagueNames = ['EPL', 'Bundesliga', 'LaLiga', 'Ligue1', 'SerieA']
 d3.select('#selDataset')   // select 'select' element from html with id = 'selDataset
@@ -9,11 +10,19 @@ d3.select('#selDataset')   // select 'select' element from html with id = 'selDa
     .text(value => value)
 
 // Initial code to create a leaflet map using EPL data
-
-let url = '/api/stadiums'
-let Coords = [52.3555, 1.1743];
-let mapZoomLevel = 5;
-
+//   let Coords = [52.3555, 1.1743];
+//   let mapZoomLevel = 5;
+//   let myMap = L.map("map", {
+//     center: Coords,
+//     zoom: mapZoomLevel,
+//     // layers: [street, europeanStadiums]
+//   })
+//   let street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+//   }).addto(myMap)
+// let url = '/api/stadiums'
+// let Coords = [52.3555, 1.1743];
+// let mapZoomLevel = 5;
 
 // Create the createMap function.
 function createMap (europeanStadiums) {
@@ -40,7 +49,9 @@ function createMap (europeanStadiums) {
  }
 
   // Create the map object with options.
-  let myMap = L.map("map", {
+  let Coords = [52.3555, 1.1743];
+  let mapZoomLevel = 5;
+  let myMap = L.map("map-id", {
     center: Coords,
     zoom: mapZoomLevel,
     layers: [street, europeanStadiums]
@@ -54,24 +65,25 @@ function createMap (europeanStadiums) {
 
 // Create the createMarkers function.
 function createMarkers(response) {
-
+  console.log(response)
   // Pull the "stadiums" property from response.data and filter for England
   let stadiums = response.features
 
   // Initialize an array to hold the Stadium markers.
   let stadiumMarkers = []
-  // console.log(stadiums)
+  console.log(stadiums)
 
   // Loop through the Stadiums array.
   for (let i = 0; i < stadiums.length; i++) {
     let stadium = stadiums[i]
+    console.log(stadium)
     let stadCoords = [stadium.geometry.coordinates[0], stadium.geometry.coordinates[1]]
-
+    console.log(stadCoords)
+    
     var soccerIcon = L.icon({
       iconUrl: '../static/football_marker.png',
       iconSize: [50, 50], // Adjust the size of the icon as needed
     });
-    
     
     // For each Stadium, create a marker, and bind a popup with the Stadiums's name.
     let stadiumMarker = L.marker((stadCoords),{icon: soccerIcon}).bindPopup(`<h1> ${stadium.properties.stadium}</h1><hr><h2>Capcity: ${stadium.properties.cap}</h2><hr><h3>Fact: ${stadium.properties.trivia}</h3>`)
@@ -80,13 +92,17 @@ function createMarkers(response) {
     // console.log(stadCoords)
     stadiumMarkers.push(stadiumMarker)
   }
+  console.log(stadiumMarkers)
   // Create a layer group that's made from the stadium markers array, and pass it to the createMap function.
-  createMap(L.layerGroup(stadiumMarkers ))
+  createMap(L.layerGroup(stadiumMarkers))
 }
 
 
 // Perform an API call to the Stadmium API to get the station information. Call createMarkers when it completes.
-d3.json(url).then(createMarkers);
+// d3.json('/api/stadiums').then(createMarkers(data))
+d3.json("/api/stadiums").then(data => {
+  response = data
+  createMarkers(response)})
 
 // intial code to create sunburst chart using EPL data
 
@@ -202,7 +218,7 @@ d3.json("/api/wages/points/EPL").then(data => {
     layoutBarLine.annotations.push(result1, result2);
   }
   
-  Plotly.newPlot('barline', data, layout);
+  Plotly.newPlot('barline', data, layoutBarLine);
 }
 )
 //  with above page will load with EPL data by default
@@ -238,7 +254,7 @@ d3.json("/api/wages/points/EPL").then(data => {
         }
       }
       // Add event listener for dropdown change
-      d3.select('leagname').on('change', onDropdownChange);
+      d3.select('leaguenames').on('change', onDropdownChange);
 //     })
 // }
 
@@ -251,8 +267,10 @@ d3.json("/api/wages/points/EPL").then(data => {
 //     })
 // }
 
-function updateBarLine(league) {
+function updateBarLine() {
     let base_url = "api/wages/points/"
+    let league = this.value
+    console.log(league)
 
     d3.json(`${base_url}${league}`).then(data => {
         let updatedWagePoints = data;
@@ -295,20 +313,22 @@ function updateBarLine(league) {
 
         ]
 
-        Plotly.restyle('bar', updatedData, [0, 1])
+        Plotly.restyle('barline', updatedData, [0, 1])
     })
 }
 
 
 
-d3.select('select').on('change', function() {
-    let league_selected = this.value
+d3.selectAll('#selDataset').on('change', updateBarLine) 
+// // (league_selected) function() {
+//     let league_selected = this.value
+//     console.log(league_selected)
 
-//     updateLeaflet(league_selected)
+// //     updateLeaflet(league_selected)
 
-//     updateSunburst(league_selected)
+// //     updateSunburst(league_selected)
 
-    updateBarLine(league_selected)
+//     updateBarLine(league_selected)
 
-})
+// })
 
