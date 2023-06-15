@@ -79,7 +79,7 @@ def wages_points(league):
     avg_points = []
     for row in response_wages_pts:
         squad_name = row.squad
-        wage = row.avgofannual_wages/1000000
+        wage = round(row.avgofannual_wages/1000000, 2)
         point = row.avg_pts
         squad_names.append(squad_name)
         avg_wages.append(wage)

@@ -181,7 +181,7 @@ d3.json("/api/wages/points/EPL").then(data => {
           t: 200,
           b: 70
         },
-        width: 600,
+        width: 800,
         height: 600,
         // paper_bgcolor: 'rgb(248,248,255)',
         // plot_bgcolor: 'rgb(248,248,255)',
@@ -192,7 +192,7 @@ d3.json("/api/wages/points/EPL").then(data => {
     let result1 = {
       xref: 'x1',
       yref: 'y1',
-      x: xPoints[i]+2.3,
+      x: xPoints[i]+ 5,
       y: yLabels[i],
       text: xPoints[i],
       font: {
@@ -205,7 +205,7 @@ d3.json("/api/wages/points/EPL").then(data => {
     var result2 = {
       xref: 'x2',
       yref: 'y1',
-      x: xWage[i] + 5,
+      x: xWage[i] + 15,
       y: yLabels[i],
       text: xWage[i] + 'M',
       font: {
@@ -334,7 +334,9 @@ function updateBarLine() {
 //   console.log(selectedValue);
 
 
-d3.selectAll('#selDataset').on('change', updateBarLine)
+d3.selectAll('#selDataset').on('change' , function (){
+  console.log(this.value)
+})
 
 
 // updateBarLine) 
