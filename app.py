@@ -37,11 +37,11 @@ def stadiums():
     features = []
     for row in response:
         properties = {
-            'City': row.city,
-            'Stadium name': row.stadium,
-            'Squad name': row.club,
-            'Capacity': row.cap,
-            'Stadium fact': row.trivia
+            'city': row.city,
+            'stadium_name': row.stadium,
+            'squad_name': row.club,
+            'capacity': row.cap,
+            'stadium_fact': row.trivia
         }
         geometry = {
             'type': 'Point',

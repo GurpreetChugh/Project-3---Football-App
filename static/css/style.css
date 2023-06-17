@@ -1,8 +1,8 @@
 html,
 body  
 {background-image: url('../soccer2.jpeg'); 
--webkit-background-size: cover; 
--moz-background-size: cover; */
+/* -webkit-background-size: cover; 
+-moz-background-size: cover; */ 
 background-size: cover; 
 background-repeat: no-repeat;
 background-position: center;
