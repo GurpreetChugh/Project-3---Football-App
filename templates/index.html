@@ -24,48 +24,44 @@
   <!-- Import custome Stadium Marker -->
   <img src="../static/football_marker.png" id="football_icon" style="display: none;">
   <!-- Our own CSS stylesheet -->
-   <link rel="stylesheet" type="text/css" href="../static/css/style.css">
-   <script type="text/javascript" src="../static/js/app.js"></script>
+  <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+  
 
 </head>
 
 <body>
 
   <div class="container">
-    <div class="row">
+    <!-- <div class="row"> -->
       <div class="text-center">
         <p class = "highlight"></p>
         <h3>Top 5 European Football Leagues</h3>
         <p>Use the interactive charts below to explore the dataset</p>
-        <!-- <div class="row"> -->
-            <!-- <div class="col-md-2">  -->
-               <!-- <div class="well">  -->
-        <!-- <div class = "text-left"> -->
+     
         <h5>League</h5>
-        <select id="selDataset" onchange="optionChanged(this.value)">
-          <option value="EPL">EPL</option>
+        <!-- onchange="optionChanged(this.value) -->
+        <select id="selDataset" >  
+          <!-- <option value="EPL">EPL</option>
           <option value="LaLiga">LaLiga</option>
           <option value="SerieA">SerieA</option>
           <option value="Bundesliga">Bundesliga</option>
-          <option value="Ligue1">Ligue1</option>
+          <option value="Ligue1">Ligue1</option> -->
         </select>
 
-              <!-- </div> -->
-            <!-- </div>  -->
-        <!-- </div> -->
-      </div>
-    <div>
-        <div id="map-id" style=" width: 1500px; height: 500px"></div>
+        </div>
+    
+      <div id="map-id"></div>
 
       <!-- </div> -->
+      <div class="chart-container">
         <div id="sunburst"></div>
-        <div id="barline"></div>
-    </div>
+        <div id="barline"></div>  
+      </div>
         <!-- <div id="barline"></div> -->
 
-    </div>
+    <!-- </div> -->
   </div>
-
+  <script type="text/javascript" src="../static/js/app.js"></script>
 </body>
 
 </html>
