@@ -98,7 +98,7 @@ def goals(league):
     session = Session(engine)
     response_sunburst = session.query(Sunburst.league, Sunburst.league_total_goals, Sunburst.squad, Sunburst.squad_total_goals, Sunburst.player, Sunburst.player_total_goal)\
         .filter(Sunburst.league == league)\
-        .order_by(Sunburst.squad_total_goals.desc(), Sunburst.player_total_goal.desc()).all()
+        .order_by(Sunburst.squad.asc(), Sunburst.player_total_goal.desc()).all()
 
     session.close()
 
@@ -134,18 +134,22 @@ def goals(league):
     parents.append('')
     values.append(result['league_goals'])
 
-    for team in result['teams']:  # [:6]
-        team_name = team['squad_name']
-        labels.append(team_name)
-        parents.append(result['league_name'])
-        team_goals = team['squad_goals']
-        values.append(team_goals)
-        for j in range(2):
-            player_name = team['players'][j]['player_name']
-            labels.append(player_name)
-            parents.append(team_name)
-            player_goals = team['players'][j]['player_goals']
-            values.append(player_goals)
+    try:
+
+        for team in result['teams']:  # [:6]
+            team_name = team['squad_name']
+            labels.append(team_name)
+            parents.append(result['league_name'])
+            team_goals = team['squad_goals']
+            values.append(team_goals)
+            for j in range(2):
+                player_name = team['players'][j]['player_name']
+                labels.append(player_name)
+                parents.append(team_name)
+                player_goals = team['players'][j]['player_goals']
+                values.append(player_goals)
+    except IndexError:
+        print(IndexError)
 
     team_player_goals = {'labels': labels,
                          'parents': parents,

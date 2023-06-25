@@ -9,63 +9,22 @@ d3.select('#selDataset')   // select 'select' element from html with id = 'selDa
     .attr('value', value => value)
     .text(value => value)
 
-// let map = null
 
-// function createMap(layerGroup) {
-//   // Create the tile layer that will be the background of our map.
-//   let street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-//   });
-
-//   let topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-//     attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-//   });
-
-//   // Create a baseMaps object to hold the lightmap layer.
-//   let baseMaps = {
-//     "Street Map": street,
-//     "Topographic": topo
-//   }
-
-
-//   // Create an overlayMaps object to hold the Stadiums layer.
-//   let overlayMaps = {
-//     "Footbal Stadiums": layerGroup
-//   }
-
-//   // Create the map object with options.
-//   let Coords = [55.3555, 4.1743];
-//   let mapZoomLevel = 6;
-//   let myMap = L.map("map-id", {
-//     center: Coords,
-//     zoom: mapZoomLevel,
-//     layers: [street, layerGroup]
-//   })
-
-//   // Create a layer control, and pass it baseMaps and overlayMaps. Add the layer control to the map.
-//   L.control.layers(baseMaps, overlayMaps, {
-//     collapsed: false
-//   }).addTo(myMap)
-
-//   // return myMap
-// }
-
-// Create the createMap function.
+// Create the createMarkers function.
 function createMarkers(myData) {
-  // console.log(response)
-  // Pull the "stadiums" property from response.data
+  
   let stadiums = myData.features
 
   // Initialize an array to hold the Stadium markers.
   let stadiumMarkers = []
-  // console.log(stadiums)
+ 
 
-  // Loop through the Stadiums array.
+  // Loop through the stadiums array.
   for (let i = 0; i < stadiums.length; i++) {
     let stadium = stadiums[i]
     console.log(stadium)
     let stadCoords = [stadium.geometry.coordinates[0], stadium.geometry.coordinates[1]]
-    // console.log(stadCoords)
+    
 
     let soccerIcon = L.icon({
       iconUrl: '../static/football_marker.png',
@@ -73,64 +32,21 @@ function createMarkers(myData) {
     });
 
 
-    // For each Stadium, create a marker, and bind a popup with the Stadiums's name.
-    let stadiumMarker = L.marker((stadCoords), { icon: soccerIcon }).bindPopup(`<h4> ${stadium.properties.stadium_name} </h4>\
-    <hr><h4>Capacity: ${stadium.properties.capacity}</h4><hr><h4>Fact: ${stadium.properties.stadium_fact} </h4>`).openPopup()
+    // For each Stadium, create a marker, and bind a popup with the Stadiums's details.
+    let stadiumMarker = L.marker((stadCoords), { icon: soccerIcon }).bindPopup(`<h5>Name: ${stadium.properties.stadium_name}</h5><hr>\
+    <h6>Team: ${stadium.properties.squad_name}</h6><hr>Capacity: ${stadium.properties.capacity}<hr>Fact: ${stadium.properties.stadium_fact}`).openPopup()
 
-    // Add the marker to the stadiumMarkers array.
-    // console.log(stadCoords)
     stadiumMarkers.push(stadiumMarker)
   }
   
   console.log(stadiumMarkers)
-  // Create a layer group that's made from the stadium markers array, and pass it to the createMap function.
 
   return L.layerGroup(stadiumMarkers)
-  // return stadiumGroup.addTo(myMap)
 
-  // let street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  // }).addTo(myMap);
-
-  // let topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-  //   attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-  // });
-
-  // Create a baseMaps object to hold the lightmap layer.
-  // let baseMaps = {
-  //   "Street Map": street,
-  //   "Topographic": topo
-  // }
-
-
-  // Create an overlayMaps object to hold the Stadiums layer.
-  // let overlayMaps = {
-  //   "Footbal Stadiums": stadiumGroup
-  // }
-
-  // Create the map object with options.
-  // let Coords = [52.3555, 1.1743];
-  // let mapZoomLevel = 6;
-  // let myMap = L.map("map-id", {
-  //   center: Coords,
-  //   zoom: mapZoomLevel,
-  //   layers: [street, stadiumGroup]
-  // })
-
-  // street.addTo(myMap)
-  
-
-  // Create a layer control, and pass it baseMaps and overlayMaps. Add the layer control to the map.
-  // L.control.layers(baseMaps, overlayMaps, {
-  //   collapsed: false
-  // }).addTo(myMap)
 }
 
 
-// Perform an API call to the Stadmium API to get the station information. Call createMarkers when it completes.
-// d3.json('/api/stadiums').then(createMarkers(data))
-
-
+// function to create leaflet map
 var myMap;
 function updateLeaflet(league) {
  
@@ -167,18 +83,14 @@ function updateLeaflet(league) {
   stadiumGroup.addTo(myMap)
 })
 }
-// intial code to create sunburst chart using EPL data
+// create sunburst chart function
 
 function updateSunburst(league) {
   url = "/api/goals/" + league
 
   d3.json(url).then(data => {
   console.log(data)
-  // let goals = data
-  // console.log(goals.labels)
-  // console.log(goals.parents)
-  // console.log(goals.values)
-
+  
   let dataSunburst = [{
     type: "sunburst",
     labels: data.labels,
@@ -190,56 +102,17 @@ function updateSunburst(league) {
   }];
 
   let layoutSunburst = {
+    title: 'Total Goals by Teams and Top 2 players in the teams',
     // width: 800,
     height: 600
   }
-
 
   Plotly.newPlot('sunburst', dataSunburst, layoutSunburst)//, sunlayout);
 
 })
 }
-//var sunlayout = {
-//  margin: {l: 0, r: 0, b: 0, t:0},
-//  sunburstcolorway:["#636efa","#ef553b","#00cc96"],
 
-// function updateLeaflet(league) {
- 
-//   // update leaflet code
-//   //  first we need to code to remove existing marker
-//   //  then vreate new markers based on league selected
-//   var selectedValue = league
-
-//   // Update map coordinates based on dropdown value
-//   switch (selectedValue) {
-//     case 'EPL':
-//       map.setView([52.3555, 1.1743], 5);
-//       break;
-//     case 'Bundesliga':
-//       map.setView([50.1109, 8.6821], 5);
-//       break;
-//     case 'LaLiga':
-//       map.setView([40.4168, 3.7038], 5);
-//       break;
-//     case 'Ligue1':
-//       map.setView([46.2276, 2.2137], 5);
-//       break;
-//     case 'SerieA':
-//       map.setView([41.8719, 12.5674], 5);
-//       break;
-//   }
-// }
-
-// Add event listener for dropdown change
-
-// d3.selectAll('#selDataset').on('change', function () {
-//   console.log(this.value)
-//   selectedValue(this.value)
-// })
-
-//         // update sunburst code
-//     })
-// }
+// Create bar + line chart
 
 function updateBarLine(league) {
   url = "/api/wages/points/" + league
@@ -379,29 +252,18 @@ function updateBarLine(league) {
 }
 
 
-// function optionChanged(value) {
-//   console.log(value)
-//   updateBarLine(value)
-//   updateLeaflet(value)
-//   updateSunburst(value)
-// }
+// Populate charts for the default league value EPL when page loads
+updateLeaflet("EPL");
+updateBarLine("EPL"); 
+updateSunburst("EPL");
 
-updateLeaflet("EPL")
-updateBarLine("EPL") // populate barline graph for EPL when page initially loads
-updateSunburst("EPL")
+// event handler on selection drop down option
 
 d3.selectAll('#selDataset').on('change', function () {
-  console.log(this.value)
-  // selectedValue(this.value)
-  updateLeaflet(this.value)
-  updateBarLine(this.value)
-  updateSunburst(this.value) 
+  console.log(this.value);
+  updateLeaflet(this.value);
+  updateBarLine(this.value);
+  updateSunburst(this.value); 
 })
 
-// document.getElementById('selDataset').addEventListener('change', function(event) {
-//   let selecetdValue = event.target.value
-//   updateBarLine(selecetdValue)
-//   updateLeaflet(selecetdValue)
-//   updateSunburst(selecetdValue)
 
-// })

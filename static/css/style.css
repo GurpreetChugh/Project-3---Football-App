@@ -27,14 +27,15 @@ p {
   color: white;
 }
 h4 {
-  color: black;
-}
-h5{
   color: white;
 }
+/* h5{
+  color: white;
+} */
 
-select id { 
-  color: white;
+select { 
+  color: black;
+  background-color: white;
 }
 
 .chart-container {
