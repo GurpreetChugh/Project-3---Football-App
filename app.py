@@ -5,6 +5,8 @@ from sqlalchemy import create_engine, func
 from pprint import pprint
 import sqlalchemy
 from sqlalchemy import inspect
+import pandas as pd
+
 # Database Setup
 #################################################
 url = "postgresql://skbuqieh:YXm0YsioQnkqxA92fuujM6M9ozp8sLi5@ruby.db.elephantsql.com/skbuqieh"
@@ -26,6 +28,11 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/teams.html')
+def teams_page():
+    return render_template('teams.html')
 
 
 @app.route('/api/stadiums/<league>')
@@ -156,6 +163,30 @@ def goals(league):
                          'values': values}
 
     return jsonify(team_player_goals)
+
+
+@app.route('/api/satisfaction_table/<league>')
+def satisfaction_table(league):
+    satisfaction_df = pd.read_csv('Data/All_satisfaction_ratings.csv')
+    satisfaction_df = satisfaction_df[satisfaction_df['League'] == league][['Squad', 'Wins', 'Draws', 'Losses', 'Points', 'Goals_For',
+                                                                            'Goals_Against', 'Goal_Differential', 'Possession', 'Wages', 'Satisfaction_score']]
+    satisfaction_dict = satisfaction_df.to_dict('records')
+    return jsonify(satisfaction_dict)
+
+
+@app.route('/api/cluster_table/<team>')
+def cluster_table(team):
+    cluster_df = pd.read_csv('Data/All_cluster_groupby.csv')
+    satisfaction_df = pd.read_csv('Data/All_satisfaction_ratings.csv')
+    league_cluster = satisfaction_df[satisfaction_df['Squad'] == team][[
+        'League', 'cluster_label']].values
+    result_df = cluster_df[(cluster_df['League'] == league_cluster[0][0]) & ((cluster_df['cluster_label'] == league_cluster[0][1])
+                                                                             | (cluster_df['cluster_label'] == "1st"))][['Points', 'Wins', 'Draws', 'Losses', 'Goals_For',
+                                                                                                                        'Goals_Against', 'Possession', 'cluster_label']].sort_values('cluster_label', ascending=False).reset_index(drop=True)
+    result_df = result_df.T.reset_index().rename(
+        columns={'index': 'Features', 0: 'Expected Performance', 1: 'Top Team Performance'})
+    result_dict = result_df[:-1].to_dict('records')
+    return jsonify(result_dict)
 
 
 if __name__ == '__main__':
