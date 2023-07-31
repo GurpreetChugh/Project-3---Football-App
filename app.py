@@ -6,6 +6,7 @@ from pprint import pprint
 import sqlalchemy
 from sqlalchemy import inspect
 import pandas as pd
+from collections import OrderedDict
 
 # Database Setup
 #################################################
@@ -165,26 +166,37 @@ def goals(league):
     return jsonify(team_player_goals)
 
 
+satisfaction_df = pd.read_csv('Data/All_satisfaction_ratings.csv')
+satisfaction_df.replace(to_replace=float('nan'), value=None, inplace=True)
+cluster_df = pd.read_csv('Data/All_cluster_groupby.csv')
+cluster_df.replace(to_replace=float('nan'), value=None, inplace=True)
+
+
 @app.route('/api/satisfaction_table/<league>')
 def satisfaction_table(league):
-    satisfaction_df = pd.read_csv('Data/All_satisfaction_ratings.csv')
-    satisfaction_df = satisfaction_df[satisfaction_df['League'] == league][['Squad', 'Wins', 'Draws', 'Losses', 'Points', 'Goals_For',
-                                                                            'Goals_Against', 'Goal_Differential', 'Possession', 'Wages', 'Satisfaction_score']]
-    satisfaction_dict = satisfaction_df.to_dict('records')
+    filtered_df = satisfaction_df[satisfaction_df['League'] == league]
+    satisfaction_dict = filtered_df[['Squad', 'Wins', 'Draws', 'Losses', 'Points', 'Goals_For',
+                                     'Goals_Against', 'Goal_Differential', 'Possession', 'Wages']].to_dict('records')
+
     return jsonify(satisfaction_dict)
+
+    # satisfaction_list = []
+    # for _, row in filtered_df.iterrows():
+    #     record = OrderedDict(row[['Squad', 'Wins', 'Draws', 'Losses', 'Points', 'Goals_For', 'Goals_Against',
+    #                               'Goal_Differential', 'Possession', 'Wages']].to_dict())
+    #     satisfaction_list.append(record)
+
+    # return jsonify(satisfaction_list)
 
 
 @app.route('/api/cluster_table/<team>')
 def cluster_table(team):
-    cluster_df = pd.read_csv('Data/All_cluster_groupby.csv')
-    satisfaction_df = pd.read_csv('Data/All_satisfaction_ratings.csv')
     league_cluster = satisfaction_df[satisfaction_df['Squad'] == team][[
         'League', 'cluster_label']].values
-    result_df = cluster_df[(cluster_df['League'] == league_cluster[0][0]) & ((cluster_df['cluster_label'] == league_cluster[0][1])
-                                                                             | (cluster_df['cluster_label'] == "1st"))][['Points', 'Wins', 'Draws', 'Losses', 'Goals_For',
-                                                                                                                        'Goals_Against', 'Possession', 'cluster_label']].sort_values('cluster_label', ascending=False).reset_index(drop=True)
+    result_df = cluster_df[(cluster_df['League'] == league_cluster[0][0]) & ((cluster_df['cluster_label'] == league_cluster[0][1]) | (cluster_df['cluster_label'] == "1st"))][['Points', 'Wins', 'Draws', 'Losses', 'Goals_For',
+                                                                                                                                                                               'Goals_Against', 'Possession', 'cluster_label']].sort_values('cluster_label', ascending=False).reset_index(drop=True)
     result_df = result_df.T.reset_index().rename(
-        columns={'index': 'Features', 0: 'Expected Performance', 1: 'Top Team Performance'})
+        columns={'index': 'Feature', 0: 'Predicted Performance', 1: 'Top Team Performance'})
     result_dict = result_df[:-1].to_dict('records')
     return jsonify(result_dict)
 

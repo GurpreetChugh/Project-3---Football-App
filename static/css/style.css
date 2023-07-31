@@ -44,6 +44,8 @@ select {
   height: 600px;
 }
 
+
+
 #barline {
   flex: 0 0 65%; /* Adjust the width as needed */
 }
@@ -62,5 +64,47 @@ select {
 
 #selDataset {
   margin-bottom: 10px;
+  margin-right: 20px;
 
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: white;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+  color : black;
+  width : 150px;
+}
+
+.table-container {
+  display: flex;
+  /* width: 1500px;
+  height: 600px;
+} */
+}
+
+.team-table-container {
+  flex: 0 0 70%; 
+  padding: 10px; 
+  margin-right : 25px
+}
+
+.cluster-table-container {
+  flex: 0 0 30%; 
+  padding: 10px; 
+}
+
+label {
+  color : white;
+}
+
+#Teams {
+  margin-bottom: 15px;
 }
